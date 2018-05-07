@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -57,7 +58,11 @@ public class WiFiScanner extends BroadcastReceiver {
     }
 
     public void stopScanning() {
-        context.unregisterReceiver(this);
+        try {
+            context.unregisterReceiver(this);
+        } catch(IllegalArgumentException e){
+            Log.e("unregistering wifi", "Nothing to unregister");
+        }
     }
 
 }
