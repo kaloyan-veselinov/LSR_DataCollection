@@ -25,7 +25,7 @@ import static android.provider.Settings.Secure.*;
 
 public class Logger {
 
-    private final static String LOGS_FOLDER = "localization";
+    private final static String LOGS_FOLDER = "Localization/";
 
     private BufferedWriter bw;
     private Context context;
@@ -78,9 +78,15 @@ public class Logger {
             Date date = new Date();
             Timestamp timestamp = new Timestamp(date.getTime());
             String filename = timestamp.toString();
-            filename = prefix + "_" + filename.substring(0, filename.length() - 4).replaceAll(":", "-").replaceAll(" ", "_") + ".js";
+            filename = prefix + "_" + filename.substring(0, filename.length() - 4).replaceAll(":", "-").replaceAll(" ", "_") + ".JSON";
 
-            File file = new File(context.getExternalFilesDir(LOGS_FOLDER), filename);
+            File documentsDirectory = Environment.getExternalStorageDirectory();
+            File outputDirectory = new File(documentsDirectory, LOGS_FOLDER);
+
+            if (!outputDirectory.mkdirs()) {
+                Log.e("directory", "Directory not created");
+            }
+            File file = new File(outputDirectory, filename);
 
             FileWriter fw = null;
             try {
@@ -89,22 +95,21 @@ public class Logger {
                 e.printStackTrace();
             }
 
-            if(fw!=null) {
+            if(fw != null) {
                 bw = new BufferedWriter(fw);
                 LogHeader logHeader = new LogHeader(buildingName, timestamp);
                 writeLine(logHeader.toString());
-            }
-            else throw new IllegalArgumentException();
+            } else throw new NullPointerException();
         }
 
     }
 
-    class LogHeader{
+    class LogHeader {
         private String phoneID;
         private String buildingName;
         private String timestamp;
 
-        LogHeader(String buildingName, Timestamp timestamp){
+        LogHeader(String buildingName, Timestamp timestamp) {
             this.phoneID = getString(context.getContentResolver(), ANDROID_ID);
             this.timestamp = timestamp.toString();
             this.buildingName = buildingName;
@@ -122,7 +127,7 @@ public class Logger {
             return jsonObject;
         }
 
-        public String toString(){
+        public String toString() {
             return toJSON().toString();
         }
     }
