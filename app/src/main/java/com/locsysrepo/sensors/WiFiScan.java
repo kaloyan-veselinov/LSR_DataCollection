@@ -66,7 +66,7 @@ public class WiFiScan {
             jsonObject.put("timestamp", timestamp);
             for (ScanResult scanResult : results) {
                 WiFiRecord wiFiRecord = new WiFiRecord(scanResult.BSSID, scanResult.level, WiFiChannel.getChannel(scanResult.frequency));
-                jsonArray.put(wiFiRecord);
+                jsonArray.put(wiFiRecord.toJSON());
             }
             jsonObject.put("wifiAPData", jsonArray);
         } catch (JSONException e) {
