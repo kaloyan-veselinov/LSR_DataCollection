@@ -1,9 +1,8 @@
 package com.locsysrepo.sensors;
 
 import android.net.wifi.ScanResult;
-import android.support.annotation.NonNull;
 
-import com.locsysrepo.android.R;
+import com.locsysrepo.utils.JSONEncoder;
 import com.locsysrepo.utils.WiFiChannel;
 
 import org.json.JSONArray;
@@ -11,10 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by valentin
@@ -59,19 +55,18 @@ public class WiFiScan {
     }
 
     JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject data = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         try {
-            jsonObject.put("sensorType", "wifiAP");
-            jsonObject.put("timestamp", timestamp);
             for (ScanResult scanResult : results) {
                 WiFiRecord wiFiRecord = new WiFiRecord(scanResult.BSSID, scanResult.level, WiFiChannel.getChannel(scanResult.frequency));
                 jsonArray.put(wiFiRecord.toJSON());
             }
-            jsonObject.put("wifiAPData", jsonArray);
+            data.put("wifiAPData", jsonArray);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return jsonObject;
+        JSONEncoder jsonEncoder = new JSONEncoder("wifiAP", timestamp);
+        return jsonEncoder.toJSON(data);
     }
 }

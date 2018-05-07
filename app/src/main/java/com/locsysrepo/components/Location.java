@@ -1,6 +1,7 @@
 package com.locsysrepo.components;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.locsysrepo.utils.JSONEncoder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,19 +71,18 @@ public class Location {
         return toJSON().toString();
     }
 
-    JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
+    private JSONObject toJSON() {
+        JSONObject data = new JSONObject();
         try {
-            jsonObject.put("sensorType", "GPS");
-            jsonObject.put("timestamp", timestamp);
-            jsonObject.put("latitude", point.getLat());
-            jsonObject.put("longitude", point.getLng());
-            jsonObject.put("source", source);
-            jsonObject.put("certainty", certainty);
-            jsonObject.put("accuracyRange", accuracyRange);
+            data.put("latitude", point.getLat());
+            data.put("longitude", point.getLng());
+            data.put("source", source);
+            data.put("certainty", certainty);
+            data.put("accuracyRange", accuracyRange);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return jsonObject;
+        JSONEncoder jsonEncoder = new JSONEncoder("GPS", timestamp);
+        return jsonEncoder.toJSON(data);
     }
 }

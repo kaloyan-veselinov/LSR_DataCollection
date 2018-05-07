@@ -1,5 +1,7 @@
 package com.locsysrepo.sensors;
 
+import com.locsysrepo.utils.JSONEncoder;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,18 +27,17 @@ public class SensorReading {
     }
 
     private JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject data = new JSONObject();
         try {
-            jsonObject.put("sensorType", type.getTag());
-            jsonObject.put("timestamp", timestamp);
-            jsonObject.put("xValue", x);
-            jsonObject.put("yValue", y);
-            jsonObject.put("zValue", z);
-            jsonObject.put("sensorTimestamp", sensor_timestamp);
+            data.put("xValue", x);
+            data.put("yValue", y);
+            data.put("zValue", z);
+            data.put("sensorTimestamp", sensor_timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return jsonObject;
+        JSONEncoder jsonEncoder = new JSONEncoder(type.getTag(), timestamp);
+        return jsonEncoder.toJSON(data);
     }
 
     public InertialSensorManager.SensorEnum getType() {
