@@ -54,7 +54,7 @@ public class WiFiScan {
         return toJSON().toString();
     }
 
-    JSONObject toJSON() {
+    private JSONObject toJSON() {
         JSONObject data = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         try {

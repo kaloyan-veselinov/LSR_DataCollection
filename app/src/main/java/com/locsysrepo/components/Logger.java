@@ -78,7 +78,7 @@ public class Logger {
             Date date = new Date();
             Timestamp timestamp = new Timestamp(date.getTime());
             String filename = timestamp.toString();
-            filename = prefix + "_" + filename.substring(0, filename.length() - 4).replaceAll(":", "-") + ".xml";
+            filename = prefix + "_" + filename.substring(0, filename.length() - 4).replaceAll(":", "-").replaceAll(" ", "_") + ".js";
 
             File file = new File(context.getExternalFilesDir(LOGS_FOLDER), filename);
 
