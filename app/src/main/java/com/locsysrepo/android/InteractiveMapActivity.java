@@ -45,6 +45,7 @@ import com.locsysrepo.components.Point3D;
 import com.locsysrepo.sensors.InertialSensorManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +68,7 @@ public class InteractiveMapActivity extends FragmentActivity
                     OnSensorDataCallback,
                     OnWiFiDataCallback {
 
-    protected final static LatLng   STARTING_LAT_LONG = new LatLng(55.944847, -3.187323);
+    private final static LatLng   STARTING_LAT_LONG = new LatLng(55.944847, -3.187323);
     private final static int        STARTING_ZOOM = 16;
     private final static String[]   landmark_types = {"Corner", "Stairs", "Elevator", "Door", "Other"};
     private final static String[]   quickLongOptions = {"None", "Update location", "Scan at location"};
@@ -111,12 +112,11 @@ public class InteractiveMapActivity extends FragmentActivity
      */
 
     private GoogleMap mMap = null;  // Might be null if Google Play services APK is not available.
-    private ArrayList<Marker> markers = new ArrayList<Marker>();    // holds only the markers that are currently displayed.
+    private ArrayList<Marker> markers = new ArrayList<>();    // holds only the markers that are currently displayed.
 
     private Vibrator vibrator;
     private BackgroundService mService = null;
 
-    private ImageButton optionsButton;
     private TextView topTextView;
 
     /**
@@ -193,7 +193,7 @@ public class InteractiveMapActivity extends FragmentActivity
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        optionsButton = (ImageButton) findViewById(R.id.menuButton);
+        ImageButton optionsButton = findViewById(R.id.menuButton);
         optionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -203,7 +203,7 @@ public class InteractiveMapActivity extends FragmentActivity
 
         topTextView = findViewById(R.id.textView_main);
 
-        locations = new HashMap<Building, ArrayList<Location>[]>();
+        locations = new HashMap<>();
 
         usm = new InertialSensorManager(this);
     }
@@ -297,7 +297,7 @@ public class InteractiveMapActivity extends FragmentActivity
     }
 
 
-    public boolean isBackgroundServiceRunning() {
+    private boolean isBackgroundServiceRunning() {
         return BackgroundService.isServiceRunning;
     }
 
@@ -353,13 +353,13 @@ public class InteractiveMapActivity extends FragmentActivity
     }
 
 
-    /**
-     **
-     **
-     **  Interaction dialogs
-     **
-     **
-     **/
+    /*
+     *
+     *
+     *  Interaction dialogs
+     *
+     *
+     */
 
 
 
@@ -368,7 +368,7 @@ public class InteractiveMapActivity extends FragmentActivity
      *  Long Click Dialog
      *
      */
-    public void showLongClickDialog(final LatLng latLng) {
+    private void showLongClickDialog(final LatLng latLng) {
         final long localTimestamp = System.currentTimeMillis();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -377,9 +377,9 @@ public class InteractiveMapActivity extends FragmentActivity
         LayoutInflater inflater = getLayoutInflater();
         final View view = inflater.inflate(R.layout.long_click_dialog, null);
 
-        final RadioButton currentLocationButton = (RadioButton) view.findViewById(R.id.radioButton_set_location);
-        final RadioButton sampleHereButton = (RadioButton) view.findViewById(R.id.radioButton_sample_here);
-        final RadioButton sampleLandmarkButton = (RadioButton) view.findViewById(R.id.radioButton_sample_landmark);
+        final RadioButton currentLocationButton = view.findViewById(R.id.radioButton_set_location);
+        final RadioButton sampleHereButton = view.findViewById(R.id.radioButton_sample_here);
+        final RadioButton sampleLandmarkButton = view.findViewById(R.id.radioButton_sample_landmark);
         Button undo = view.findViewById(R.id.undo_button);
 
         builder.setView(view).setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -406,18 +406,17 @@ public class InteractiveMapActivity extends FragmentActivity
             }
         });
 
-        ArrayList<String> spinnerArray = new ArrayList<String>();
+        ArrayList<String> spinnerArray = new ArrayList<>();
 
-        for (String l : landmark_types)
-            spinnerArray.add(l);
+        Collections.addAll(spinnerArray, landmark_types);
 
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
                 spinnerArray);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner_landmark);
+        Spinner spinner = view.findViewById(R.id.spinner_landmark);
         spinner.setAdapter(spinnerArrayAdapter);
         spinner.setSelection(selectedLandmark);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -453,14 +452,14 @@ public class InteractiveMapActivity extends FragmentActivity
 
         final Context appContext = this;
 
-        final CheckBox ckb_acc = (CheckBox) view.findViewById(R.id.checkBox_acc);
-        final CheckBox ckb_magn = (CheckBox) view.findViewById(R.id.checkBox_magn);
-        final CheckBox ckb_gyro = (CheckBox) view.findViewById(R.id.checkBox_gyro);
-        final CheckBox ckb_wifi = (CheckBox) view.findViewById(R.id.checkBox_wifi);
-        final CheckBox ckb_log_location_input = (CheckBox) view.findViewById(R.id.checkBox_log_location_input);
-        final CheckBox ckb_log_sensor_input = (CheckBox) view.findViewById(R.id.checkBox_log_sensor_input);
-        final CheckBox ckb_log_continuous = (CheckBox) view.findViewById(R.id.checkBox_log_continuous);
-        final CheckBox ckb_estimation_running = (CheckBox) view.findViewById(R.id.checkBox_location_estimation);
+        final CheckBox ckb_acc = view.findViewById(R.id.checkBox_acc);
+        final CheckBox ckb_magn = view.findViewById(R.id.checkBox_magn);
+        final CheckBox ckb_gyro = view.findViewById(R.id.checkBox_gyro);
+        final CheckBox ckb_wifi = view.findViewById(R.id.checkBox_wifi);
+        final CheckBox ckb_log_location_input = view.findViewById(R.id.checkBox_log_location_input);
+        final CheckBox ckb_log_sensor_input = view.findViewById(R.id.checkBox_log_sensor_input);
+        final CheckBox ckb_log_continuous = view.findViewById(R.id.checkBox_log_continuous);
+        final CheckBox ckb_estimation_running = view.findViewById(R.id.checkBox_location_estimation);
 
         ckb_acc.setChecked(sensingAcc);
         ckb_magn.setChecked(sensingMagn);
@@ -521,10 +520,7 @@ public class InteractiveMapActivity extends FragmentActivity
                     stopBackgroundService();
 
                 if (originalQuickLongTapOptionIndex != quickLongTapOptionIndex) {
-                    if (quickLongTapOptionIndex == QUICK_SET_NONE)
-                        quickLongTap = false;
-                    else
-                        quickLongTap = true;
+                    quickLongTap = quickLongTapOptionIndex != QUICK_SET_NONE;
                 }
 
 
@@ -532,16 +528,15 @@ public class InteractiveMapActivity extends FragmentActivity
         });
 
         if (buildingsEnabled) {
-            final Spinner spinner_building = (Spinner) view.findViewById(R.id.spinner_building);
-            final Spinner spinner_floor = (Spinner) view.findViewById(R.id.spinner_floor);
+            final Spinner spinner_building = view.findViewById(R.id.spinner_building);
+            final Spinner spinner_floor = view.findViewById(R.id.spinner_floor);
 
             // set options for the building spinner
-            ArrayList<String> spinnerArray_building = new ArrayList<String>();
+            ArrayList<String> spinnerArray_building = new ArrayList<>();
 
-            for (String name : Buildings_DB.buildingNames)
-                spinnerArray_building.add(name);
+            Collections.addAll(spinnerArray_building, Buildings_DB.buildingNames);
 
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(
                     appContext,
                     android.R.layout.simple_spinner_item,
                     spinnerArray_building);
@@ -557,12 +552,11 @@ public class InteractiveMapActivity extends FragmentActivity
                     currentBuildingIndex = i;
 
                     // update the floor spinner
-                    ArrayList<String> spinnerArray_floor = new ArrayList<String>();
+                    ArrayList<String> spinnerArray_floor = new ArrayList<>();
 
-                    for (String floor : Buildings_DB.getBuilding(i).getFloors())
-                        spinnerArray_floor.add(floor);
+                    Collections.addAll(spinnerArray_floor, Buildings_DB.getBuilding(i).getFloors());
 
-                    ArrayAdapter<String> spinnerArrayAdapter_floor = new ArrayAdapter<String>(
+                    ArrayAdapter<String> spinnerArrayAdapter_floor = new ArrayAdapter<>(
                             appContext,
                             android.R.layout.simple_spinner_item,
                             spinnerArray_floor);
@@ -595,11 +589,10 @@ public class InteractiveMapActivity extends FragmentActivity
         }
 
         // Quick Long Tap
-        final Spinner spinner_quick_long = (Spinner) view.findViewById(R.id.spinner_quick_long);
-        ArrayList<String> spinnerArray_quickLong = new ArrayList<String>();
-        for (String option : quickLongOptions)
-            spinnerArray_quickLong.add(option);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+        final Spinner spinner_quick_long = view.findViewById(R.id.spinner_quick_long);
+        ArrayList<String> spinnerArray_quickLong = new ArrayList<>();
+        Collections.addAll(spinnerArray_quickLong, quickLongOptions);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(
                 appContext,
                 android.R.layout.simple_spinner_item,
                 spinnerArray_quickLong);
@@ -651,17 +644,16 @@ public class InteractiveMapActivity extends FragmentActivity
         markers.clear();
 
         // update points
-        if (!locations.containsKey(currentBuilding)) {
+        if (!locations.containsKey(currentBuilding))
             locations.put(currentBuilding, new ArrayList[currentBuilding.getNumberOfFloors()]);
-        }
         if (locations.get(currentBuilding)[currentFloorIndex] == null)
-            locations.get(currentBuilding)[currentFloorIndex] = new ArrayList<Location>();
+            locations.get(currentBuilding)[currentFloorIndex] = new ArrayList<>();
 
 
         for (Location l : locations.get(currentBuilding)[currentFloorIndex])
                 drawPoint(l.getLatLng(), l.getTimestamp());
 
-        topTextView.setText("Building: " + currentBuilding.name + ";\tFloor: " + currentBuilding.getFloors()[currentFloorIndex]);
+        topTextView.setText(String.format("Building: %s;\tFloor: %s", currentBuilding.name, currentBuilding.getFloors()[currentFloorIndex]));
 
     }
 
@@ -704,7 +696,7 @@ public class InteractiveMapActivity extends FragmentActivity
     }
 
     private void scanAtLocationOrLandmark(double lat, double lng, long timestamp, int landmarkIndex) {
-        /**
+        /*
          * simple location has landmarkIndex = -1
          * Corner   = 0
          * Stairs   = 1
@@ -811,7 +803,7 @@ public class InteractiveMapActivity extends FragmentActivity
             Marker m2 = markers.get(markers.size() - 2);
             android.location.Location.distanceBetween(m1.getPosition().latitude, m1.getPosition().longitude,
                     m2.getPosition().latitude, m2.getPosition().longitude, res);
-            topTextView.setText("Distance:" + res[0]);
+            topTextView.setText(String.format("Distance:%s", res[0]));
         }
 
     }

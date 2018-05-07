@@ -16,7 +16,7 @@ public class Buildings_DB {
      */
 
     public static String[] buildingNames = {"Informatics Forum", "Appleton Tower", "Main Library"};
-    public static Building[] buildings = new Building[buildingNames.length];
+    private static Building[] buildings = new Building[buildingNames.length];
 
     public static Building getBuilding(int index) {
         if (index == 0) {

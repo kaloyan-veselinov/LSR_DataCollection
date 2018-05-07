@@ -9,7 +9,7 @@ public class SensorReading {
     private StringBuffer sb = new StringBuffer();
 
 
-    public SensorReading(float x, float y, float z, long time, InertialSensorManager.SensorEnum type, long sensor_timestamp) {
+    SensorReading(float x, float y, float z, long time, InertialSensorManager.SensorEnum type, long sensor_timestamp) {
         this.x = x;
         this.y = y;
         this.z = z;

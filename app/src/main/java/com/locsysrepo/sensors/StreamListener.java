@@ -8,12 +8,12 @@ import android.hardware.SensorEventListener;
  * Created by valentin
  */
 
-public class StreamListener implements SensorEventListener {
+class StreamListener implements SensorEventListener {
 
     private InertialSensorManager.SensorEnum type;
     private OnSensorDataCallback sensorDataCallback;
 
-    public StreamListener(InertialSensorManager.SensorEnum type, OnSensorDataCallback sensorDataCallback) {
+    StreamListener(InertialSensorManager.SensorEnum type, OnSensorDataCallback sensorDataCallback) {
         this.type = type;
         this.sensorDataCallback = sensorDataCallback;
     }

@@ -6,7 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by valentin
  */
 
-public class Metrics {
+class Metrics {
     public static double getDistance(LatLng p1, LatLng p2) {
         final double R = 6381 * 1000; // metres
 

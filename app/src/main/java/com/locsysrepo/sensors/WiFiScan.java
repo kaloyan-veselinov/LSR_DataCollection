@@ -13,12 +13,12 @@ import java.util.List;
 
 public class WiFiScan {
 
-    public class WiFiRecord {
+    class WiFiRecord {
         String bssid;
         int signal;
         int channel;
 
-        public WiFiRecord(String bssid, int signal, int channel) {
+        WiFiRecord(String bssid, int signal, int channel) {
             this.bssid = bssid;
             this.signal = signal;
             this.channel = channel;
@@ -28,8 +28,8 @@ public class WiFiScan {
     private List<WiFiRecord> scan;
     private long timestamp;
 
-    public WiFiScan(List<ScanResult> results) {
-        scan = new ArrayList<WiFiRecord>();
+    WiFiScan(List<ScanResult> results) {
+        scan = new ArrayList<>();
 
         for (ScanResult result : results) {
             scan.add(new WiFiRecord(result.BSSID,
@@ -42,7 +42,7 @@ public class WiFiScan {
     }
 
     public String toString() {
-        StringBuffer message = new StringBuffer();
+        StringBuilder message = new StringBuilder();
         message.append("<wr t=\"");
         message.append(timestamp);
         message.append("\">\n");

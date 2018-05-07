@@ -2,12 +2,10 @@ package com.locsysrepo.sensors;
 
 import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.locsysrepo.components.Logger;
 
 /**
  * Created by valentin
@@ -35,22 +33,22 @@ public class InertialSensorManager {
         private final int type;
         private final char tag;
         private int sampling;
-        private SensorEnum(int order, int type, char tag, int samplingRate) {
+        SensorEnum(int order, int type, char tag, int samplingRate) {
             this.order = order;
             this.type = type;
             this.tag = tag;
             this.sampling = samplingRate;
         }
-        public int getOrder() {
+        int getOrder() {
             return this.order;
         }
-        public int getSensorType() {
+        int getSensorType() {
             return this.type;
         }
         public char getTag() {
             return  this.tag;
         }
-        public int getSamplingRate() { return this.sampling; }
+        int getSamplingRate() { return this.sampling; }
     }
 
     private Object[]    streamListener = new Object[SensorEnum.values().length];
@@ -105,24 +103,24 @@ public class InertialSensorManager {
     }
 
 
-    /** For all the sensors at once **/
-
-    public void startAllSensorsStream(OnSensorDataCallback sensorDataCallback) {
-        this.startSensorStream(SensorEnum.ACCELEROMETER, sensorDataCallback);
-        this.startSensorStream(SensorEnum.MAGNETOMETER, sensorDataCallback);
-        this.startSensorStream(SensorEnum.GYROSCOPE, sensorDataCallback);
-    }
-    public void stopAllSensorsStream() {
-        this.stopSensorStream(SensorEnum.ACCELEROMETER);
-        this.stopSensorStream(SensorEnum.MAGNETOMETER);
-        this.stopSensorStream(SensorEnum.GYROSCOPE);
-    }
-    public void sampleFromAllSensors (OnSensorDataCallback sensorDataCallback,
-                                      boolean aggregate, long interval) {
-        this.sampleSensor(SensorEnum.ACCELEROMETER, sensorDataCallback, aggregate, interval);
-        this.sampleSensor(SensorEnum.MAGNETOMETER, sensorDataCallback, aggregate, interval);
-        this.sampleSensor(SensorEnum.GYROSCOPE, sensorDataCallback, aggregate, interval);
-    }
+//    /** For all the sensors at once **/
+//
+//    public void startAllSensorsStream(OnSensorDataCallback sensorDataCallback) {
+//        this.startSensorStream(SensorEnum.ACCELEROMETER, sensorDataCallback);
+//        this.startSensorStream(SensorEnum.MAGNETOMETER, sensorDataCallback);
+//        this.startSensorStream(SensorEnum.GYROSCOPE, sensorDataCallback);
+//    }
+//    public void stopAllSensorsStream() {
+//        this.stopSensorStream(SensorEnum.ACCELEROMETER);
+//        this.stopSensorStream(SensorEnum.MAGNETOMETER);
+//        this.stopSensorStream(SensorEnum.GYROSCOPE);
+//    }
+//    public void sampleFromAllSensors (OnSensorDataCallback sensorDataCallback,
+//                                      boolean aggregate, long interval) {
+//        this.sampleSensor(SensorEnum.ACCELEROMETER, sensorDataCallback, aggregate, interval);
+//        this.sampleSensor(SensorEnum.MAGNETOMETER, sensorDataCallback, aggregate, interval);
+//        this.sampleSensor(SensorEnum.GYROSCOPE, sensorDataCallback, aggregate, interval);
+//    }
 
     /**
      * Make sure that all sensing is turned off

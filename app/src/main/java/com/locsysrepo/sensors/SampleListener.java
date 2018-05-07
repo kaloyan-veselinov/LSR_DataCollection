@@ -1,15 +1,11 @@
 package com.locsysrepo.sensors;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.widget.Toast;
-
-import com.locsysrepo.components.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,20 +14,20 @@ import java.util.Collections;
  * Created by valentin
  */
 
-public class SampleListener implements SensorEventListener {
+class SampleListener implements SensorEventListener {
 
-    public final long INTERVAL = 100;    // default in milliseconds
+//    public final long INTERVAL = 100;    // default in milliseconds
 
     private long interval;
-    private boolean aggregate = true;
+    private boolean aggregate;
     private long startTime = -1;
-    private ArrayList<Float>[] records;
+    private ArrayList<Float>[] records = (ArrayList<Float>[])new ArrayList[3];
     private ArrayList<Long> times;
     private Context context;
     private InertialSensorManager.SensorEnum sensor;
     private OnSensorDataCallback sensorDataCallback;
 
-    public SampleListener(InertialSensorManager.SensorEnum sensor,
+    SampleListener(InertialSensorManager.SensorEnum sensor,
                           OnSensorDataCallback sensorDataCallback,
                           boolean aggregate, long interval, Context context) {
         this.sensor = sensor;
@@ -41,11 +37,10 @@ public class SampleListener implements SensorEventListener {
         this.sensorDataCallback = sensorDataCallback;
 
         if (aggregate) {
-            records = new ArrayList[3];
-            records[0] = new ArrayList<Float>();
-            records[1] = new ArrayList<Float>();
-            records[2] = new ArrayList<Float>();
-            times = new ArrayList<Long>();
+            records[0] = new ArrayList<>();
+            records[1] = new ArrayList<>();
+            records[2] = new ArrayList<>();
+            times = new ArrayList<>();
         }
     }
 
@@ -99,7 +94,10 @@ public class SampleListener implements SensorEventListener {
 
     private void stopListening() {
         SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+
+        assert sensorManager != null;
         sensorManager.unregisterListener(this);
         Toast.makeText(context, "Sensor sample collected!", Toast.LENGTH_SHORT).show();
+
     }
 }

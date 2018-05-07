@@ -21,7 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by valentin
+  Created by valentin
  */
 
 /**
@@ -30,20 +30,20 @@ import java.util.TimerTask;
 
 public class BackgroundService extends Service implements OnSensorDataCallback, OnWiFiDataCallback {
 
-    public static final int     LOCATION_ESTIMATION_PERIOD = 2000;	// in milliseconds
+    private static final int     LOCATION_ESTIMATION_PERIOD = 2000;	// in milliseconds
     public static final String  LOCATION_BROADCAST_ACTION = "com.locmap.estimatedLocationBroadcast";
 
     private final static String backgroundLoggerPrefix = "background";
 
     public static boolean       isServiceRunning = false;
-    public static boolean       isEstimatingLocation = false;
+    private static boolean       isEstimatingLocation = false;
 
     private boolean  sensingAcc;
     private boolean  sensingMagn;
     private boolean  sensingGyro;
     private boolean  sensingWifi;
 
-    public boolean   isLoggingSensorData = false;
+    private boolean   isLoggingSensorData = false;
 
     private final IBinder   mBinder = new BackgroundServiceBinder();
 
@@ -197,12 +197,17 @@ public class BackgroundService extends Service implements OnSensorDataCallback, 
             logData(sample.toString());
         }
 
-        if (sample.getType() == InertialSensorManager.SensorEnum.ACCELEROMETER)
-            accReading = sample;
-        else if (sample.getType() == InertialSensorManager.SensorEnum.MAGNETOMETER)
-            magnReading = sample;
-        else if (sample.getType() == InertialSensorManager.SensorEnum.GYROSCOPE)
-            gyroReading = sample;
+        switch (sample.getType()) {
+            case ACCELEROMETER:
+                accReading = sample;
+                break;
+            case MAGNETOMETER:
+                magnReading = sample;
+                break;
+            case GYROSCOPE:
+                gyroReading = sample;
+                break;
+        }
     }
 
     @Override
@@ -282,7 +287,6 @@ public class BackgroundService extends Service implements OnSensorDataCallback, 
      * @param oldLocation
      * @return
      */
-
     private Location estimateNextLocation(Location oldLocation) {
         // TODO TASK: add intelligent update here by interpreting sensor data or send calls to cloud app
 

@@ -9,9 +9,9 @@ import com.google.android.gms.maps.model.LatLng;
 public class Location {
     public static final byte SOURCE_USER_INPUT = 1;
     public static final byte SOURCE_PDR_ESTIMATION = 2;
-    public static final byte SOURCE_WIFI_ESTIMATION = 3;
+//    public static final byte SOURCE_WIFI_ESTIMATION = 3;
     public static final byte SOURCE_PDR_WIFI_ESTIMATION = 4;
-    public static final byte SOURCE_CLOUD_PROVIDED = 5;
+//    public static final byte SOURCE_CLOUD_PROVIDED = 5;
 
 
     /**

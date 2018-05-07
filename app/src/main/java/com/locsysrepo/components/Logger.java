@@ -2,8 +2,6 @@ package com.locsysrepo.components;
 
 import android.content.Context;
 import android.os.Environment;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,8 +9,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.sql.Timestamp;
+
+
+import static android.provider.Settings.Secure.*;
 
 /**
  * Created by valentin
@@ -32,7 +34,7 @@ public class Logger {
         open(prefix);
     }
 
-    public synchronized void write(String data) {
+    private synchronized void write(String data) {
         try {
             Log.i("logger write", data);
             bw.append(data);
@@ -49,12 +51,18 @@ public class Logger {
         }
     }
 
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state))
-            return true;
-        else
-            return false;
+    private static boolean isExternalStorageReadOnly() {
+        String extStorageState = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState);
+    }
+
+    private static boolean isExternalStorageAvailable() {
+        String extStorageState = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(extStorageState);
+    }
+
+    private boolean isExternalStorageWritable() {
+        return isExternalStorageAvailable() && !isExternalStorageReadOnly();
     }
 
     private void open(String prefix) {
@@ -64,16 +72,12 @@ public class Logger {
         }
 
         if (bw == null) {
-            File dir = new File (Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + LOGS_FOLDER);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
             Date date = new Date();
             Timestamp timestamp = new Timestamp(date.getTime());
             String filename = timestamp.toString();
+            filename = prefix + "_" + filename.substring(0, filename.length() - 4).replaceAll(":", "-") + ".xml";
 
-            File file = new File(dir, prefix + "_" + filename.substring(0, filename.length() - 4).replaceAll(":", "-") + ".xml");
+            File file = new File(context.getExternalFilesDir(LOGS_FOLDER), filename);
 
             FileWriter fw = null;
             try {
@@ -81,12 +85,12 @@ public class Logger {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            bw = new BufferedWriter(fw);
 
-            write("<data phone=\"" +
-                    Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID) +
-                    "\" building=\"" + buildingName + "\" t=\"" + timestamp.toString() + "\">\n");
-
+            if(fw!=null) {
+                bw = new BufferedWriter(fw);
+                write(MessageFormat.format("<data phone=\"{0}\" building=\"{1}\" t=\"{2}\">\n", getString(context.getContentResolver(), ANDROID_ID), buildingName, timestamp.toString()));
+            }
+            else throw new IllegalArgumentException();
         }
 
     }

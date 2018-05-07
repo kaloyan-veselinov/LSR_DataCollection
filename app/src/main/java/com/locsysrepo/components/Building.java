@@ -18,7 +18,7 @@ public class Building {
         this.name = name;
     }
 
-    public Building(String name, String[] floorNames) {
+    Building(String name, String[] floorNames) {
         this.name = name;
         this.floorNames = floorNames;
     }
