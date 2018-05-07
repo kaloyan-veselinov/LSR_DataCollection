@@ -1,12 +1,14 @@
 package com.locsysrepo.sensors;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class SensorReading {
 
     private InertialSensorManager.SensorEnum type;
     private float x, y, z;
     private long timestamp;
     private long sensor_timestamp;
-    private StringBuffer sb = new StringBuffer();
 
 
     SensorReading(float x, float y, float z, long time, InertialSensorManager.SensorEnum type, long sensor_timestamp) {
@@ -19,18 +21,22 @@ public class SensorReading {
     }
 
     public String toString() {
-        sb.setLength(0);
+        return toJSON().toString();
+    }
 
-        sb.append("<");
-        sb.append(type.getTag());
-        sb.append(" t=\""); sb.append(timestamp);
-        sb.append("\" x=\""); sb.append(x);
-        sb.append("\" y=\""); sb.append(y);
-        sb.append("\" z=\""); sb.append(z);
-        sb.append("\" st=\""); sb.append(sensor_timestamp);
-        sb.append("\" />");
-
-        return sb.toString();
+    private JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("sensorType", type.getTag());
+            jsonObject.put("timestamp", timestamp);
+            jsonObject.put("xValue", x);
+            jsonObject.put("yValue", y);
+            jsonObject.put("zValue", z);
+            jsonObject.put("sensorTimestamp", sensor_timestamp);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
     public InertialSensorManager.SensorEnum getType() {

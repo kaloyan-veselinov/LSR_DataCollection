@@ -25,15 +25,15 @@ public class InertialSensorManager {
     private static final int GYROSCOPE_SAMPLING = SensorManager.SENSOR_DELAY_FASTEST;
 
     public enum SensorEnum {
-        ACCELEROMETER(0, Sensor.TYPE_ACCELEROMETER, 'a', ACCELEROMETER_SAMPLING),
-        MAGNETOMETER(1, Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED, 'm', MAGNETIC_SAMPLING),
-        GYROSCOPE(2, Sensor.TYPE_GYROSCOPE_UNCALIBRATED, 'g', GYROSCOPE_SAMPLING);
+        ACCELEROMETER(0, Sensor.TYPE_ACCELEROMETER, "accelerometer", ACCELEROMETER_SAMPLING),
+        MAGNETOMETER(1, Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED, "magnetometer", MAGNETIC_SAMPLING),
+        GYROSCOPE(2, Sensor.TYPE_GYROSCOPE_UNCALIBRATED, "gyroscope", GYROSCOPE_SAMPLING);
 
         private final int order;
         private final int type;
-        private final char tag;
+        private final String tag;
         private int sampling;
-        SensorEnum(int order, int type, char tag, int samplingRate) {
+        SensorEnum(int order, int type, String tag, int samplingRate) {
             this.order = order;
             this.type = type;
             this.tag = tag;
@@ -45,7 +45,7 @@ public class InertialSensorManager {
         int getSensorType() {
             return this.type;
         }
-        public char getTag() {
+        public String getTag() {
             return  this.tag;
         }
         int getSamplingRate() { return this.sampling; }

@@ -5,6 +5,9 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -88,16 +91,44 @@ public class Logger {
 
             if(fw!=null) {
                 bw = new BufferedWriter(fw);
-                write(MessageFormat.format("<data phone=\"{0}\" building=\"{1}\" t=\"{2}\">\n", getString(context.getContentResolver(), ANDROID_ID), buildingName, timestamp.toString()));
+                LogHeader logHeader = new LogHeader(buildingName, timestamp);
+                writeLine(logHeader.toString());
             }
             else throw new IllegalArgumentException();
         }
 
     }
 
+    class LogHeader{
+        private String phoneID;
+        private String buildingName;
+        private String timestamp;
+
+        LogHeader(String buildingName, Timestamp timestamp){
+            this.phoneID = getString(context.getContentResolver(), ANDROID_ID);
+            this.timestamp = timestamp.toString();
+            this.buildingName = buildingName;
+        }
+
+        JSONObject toJSON() {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("phoneID", phoneID);
+                jsonObject.put("buildingName", buildingName);
+                jsonObject.put("timestamp", timestamp);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+
+        public String toString(){
+            return toJSON().toString();
+        }
+    }
+
     public void close() {
         if (bw != null) {
-            this.write("</data>");
             try {
                 this.bw.close();
             } catch (IOException e) {

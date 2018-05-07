@@ -4,4 +4,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_StartStop_service">Start Service</string>
+
+    <string name="timestamp">timestamp</string>
+    <string name="sensorType">sensorType</string>
 </resources>

@@ -2,6 +2,9 @@ package com.locsysrepo.components;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by valentin
  */
@@ -64,12 +67,22 @@ public class Location {
     }
 
 	public String toString() {
-        return "<loc t=\"" + this.timestamp +
-                "\" lat=\"" + this.point.getLat() +
-                "\" lng=\"" + this.point.getLng() +
-                "\" src=\"" + this.source +
-                "\" certainty=\"" + this.certainty +
-                "\" accuracy_range=\"" + this.accuracyRange +
-                "\" />";
+        return toJSON().toString();
+    }
+
+    JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("sensorType", "GPS");
+            jsonObject.put("timestamp", timestamp);
+            jsonObject.put("latitude", point.getLat());
+            jsonObject.put("longitude", point.getLng());
+            jsonObject.put("source", source);
+            jsonObject.put("certainty", certainty);
+            jsonObject.put("accuracyRange", accuracyRange);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 }
