@@ -42,3 +42,18 @@ A sample reading from the accelerometer
 
 A sample reading from the magnetometer
 
+```JSON
+{
+  "sensorType":"wifiAP",
+  "timestamp":1526392917389,
+  "data":{
+    "wifiAPData":[
+        {"bssid":"9c:1c:12:24:af:31","level":-54,"channel":11},     
+        {"bssid":"9c:1c:12:24:af:39","level":-46,"channel":52}
+      ]
+  }
+}
+```
+
+A sample WiFi scan
+
