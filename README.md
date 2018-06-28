@@ -4,7 +4,41 @@ Android app for sensor data collection to be used for the indoor localization pr
 
 Remember to update the AndroidManifest with [your own Google Maps API key](https://developers.google.com/maps/documentation/android-api/signup).
 
-A signed APK is available in `/app/release/`.
+An APK is available in `/app/release/`.
 
-The application outputs data in a JSON-like format with one entry per line. All sensors output to the same file. The file is located on the external storage of your phone, under `/Localization`.
+## Data format
+
+The application outputs data in a JSON-like format with one entry per line. All sensors output to the same file. The file is located on the external storage of your phone, under `Android/data/com.ilrepo.displayloc/files/Localization`.
+
+### Sample Outputs
+
+```JSON
+{
+  "sensorType":"accelerometer",
+  "timestamp":1528835210957,
+  "data":{
+    "xValue":0.3064578175544739,
+    "yValue":5.822698593139648,
+    "zValue":6.426037311553955,
+    "sensorTimestamp":47746742823018
+  }
+}
+```
+
+A sample reading from the accelerometer
+
+```JSON
+{
+  "sensorType":"magnetometer",
+  "timestamp":1528835211192,
+  "data":{
+    "xValue":-22.5,
+    "yValue":-32.52000045776367,
+    "zValue":-9.359999656677246,
+    "sensorTimestamp":47746785269007
+  }
+}
+```
+
+A sample reading from the magnetometer
 
